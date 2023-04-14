@@ -10,8 +10,8 @@ int main() {
     int n;
     int ans=0;
     cin>>n;
-    for(int i=1; i<n; i++) {
-        int result =0;;
+    for(int i=1; i<=n; i++) {
+        int result =0;
         int num = i;
         result = num;
         while(1) {

@@ -11,7 +11,6 @@ void dfs(vector<int> numbers, int target, int sum, int index){
         if(sum == target){
             answer++;
         }
-        
         return;
     }
     dfs(numbers, target, sum + numbers[index], index +1);

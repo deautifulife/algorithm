@@ -7,7 +7,7 @@ using namespace std;
 int n;
 long long price[100001];
 long long meter[100001];
-long long ans;
+unsigned long long ans;
 
 
 int main(){

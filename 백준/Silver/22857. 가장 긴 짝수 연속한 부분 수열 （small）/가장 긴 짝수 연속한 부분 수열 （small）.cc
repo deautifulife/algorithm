@@ -6,25 +6,7 @@ using namespace std;
 
 int n, k;
 int arr[50001];
-int d[50001][101]; //수열의 인덱스,K의 횟수
 
-int DP(int x, int count, int length) {
-	if (x <= 0 || count > k)
-		return length;
-	if (d[x][count] != 0)
-		return d[x][count];
-
-	int value = 0;
-	//짝수면 length +1, 삭제 x
-	if (arr[x] % 2 == 0)
-		value = DP(x - 1, count, length + 1);
-	//홀수이면서 count < K, 삭제
-	else if (count < k)
-		value = DP(x - 1, count + 1, length);
-	else if (count == k)
-		return length;
-	return d[x][count] = value;
-}
 
 int main() {
 
@@ -33,17 +15,38 @@ int main() {
 	cout.tie(NULL);
 
 	cin >> n >> k;
-	for (int i = 1; i <= n; i++) {
+	for (int i = 0; i < n; i++) {
 		cin >> arr[i];
 	}
+
+	int start = 0, end = 0;
+	int cnt = 0; //홀수를 지운 카운트
 	int ret = 0;
-	for (int i = n; i >= 1; i--) {
-		for (int j = 0; j < k; j++) {
-			if (arr[i] % 2 == 0)
-				ret = max(ret, DP(i, j, 0));
+
+	while (1) {
+		//구간 안에 홀수가 k 초과일 때
+		if (cnt > k) {
+			//start가 홀수면 cnt -1 -> start+1
+			if (arr[start] % 2 == 1) {
+				cnt -= 1;
+			}
+			start += 1;
+		}
+		else if (end == n) {
+			break;
+		}
+		//end가 홀수면 cnt+1 -> end +1
+		else {
+			if (arr[end] % 2 == 1) {
+				cnt += 1;
+			}
+			end += 1;
+		}
+		//구간 안에 홀수가 k개 이하라면 tail을 증가시켜 구간을 늘린다.
+		if (cnt <= k) {
+			ret = max(ret, end - start - cnt);
 		}
 	}
-
 	cout << ret;
 
 	return 0;

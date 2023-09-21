@@ -1,67 +1,68 @@
 #include <iostream>
-#include <vector>
-#include <algorithm>
-#include <cmath>
+#include<vector>
 
 using namespace std;
 
-int n, m;
-int minCityDistance = 99999;
-vector<pair<int, int>> house;
-vector<pair<int, int>> chicken;
-vector<int> selected;
+struct POSI {
+	int y, x;
+};
 
-void calculateDistance() {
-	int cityDistance = 0;
-	for (int i = 0; i < house.size(); i++) {
-		int minHouseDistance = 99999;
-		for (int j = 0; j < chicken.size(); j++) {
-			if (selected[j] == 1) {
-				int houseDistance = abs(house[i].first - chicken[j].first) + abs(house[i].second - chicken[j].second);
-				if (houseDistance < minHouseDistance)
-					minHouseDistance = houseDistance;
+int n, m, type, ret;
+vector<POSI> house, shop, pick;
+
+void dfs(int pos) {
+	if (pick.size() == m) {
+		int candi = 0;
+		for (int i = 0; i < house.size(); i++) {
+			int min_dist = 1000000;
+			for (int j = 0; j < pick.size(); j++) {
+				min_dist = min(min_dist, abs(house[i].y - pick[j].y) + abs(house[i].x - pick[j].x));
 			}
+			candi += min_dist;
 		}
-		cityDistance += minHouseDistance;
+		if (ret > candi) {
+			ret = candi;
+		}
+		return;
 	}
-	if (cityDistance < minCityDistance)
-		minCityDistance = cityDistance;
+
+	for (int i = pos; i < shop.size(); i++) {
+		pick.push_back(shop[i]);
+		dfs(i + 1);
+		pick.pop_back();
+	}
 }
 
-void selectChicken() {
-	for (int i = 0; i < chicken.size() - m; i++) {
-		selected.push_back(0);
-	}
-	for (int i = 0; i < m; i++) {
-		selected.push_back(1);
-	}
-	do {
-		calculateDistance();
-	} while (next_permutation(selected.begin(), selected.end()));
-}
-
-int main(void) {
+int main() {
 
 	ios::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	cin >> n >> m;
 
-	//정보 입력
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			int flag;
-			cin >> flag;
-			if (flag == 1)
-				house.push_back(make_pair(i, j));
-			else if (flag == 2)
-				chicken.push_back(make_pair(i, j));
+	POSI target;
+	cin >> n >> m;
+	for (int y = 0; y < n; y++) {
+		for (int x = 0; x < n; x++) {
+			cin >> type;
+			//집
+			if (type == 1) {
+				target.y = y;
+				target.x = x;
+				house.push_back(target);
+			}
+			//치킨집
+			if (type == 2) {
+				target.y = y;
+				target.x = x;
+				shop.push_back(target);
+			}
 		}
 	}
 
-	selectChicken();
-	cout << minCityDistance;
+	ret = 0x7fffffff;
+	dfs(0);
+	cout << ret;
 
-
+	return 0;
 }

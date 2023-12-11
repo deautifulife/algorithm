@@ -1,71 +1,65 @@
 #include <iostream>
-#include <vector>
-#include <algorithm>
+#include <cmath>
 
 using namespace std;
 
-int main(){
+char sl, sr;
+int ll, lr;
+char arr[101];
+int ret;
+
+char za[3][6] = { {'q','w','e','r','t','*'}, {'a','s','d','f','g','*'}, {'z','x','c','v','*','*'}};
+char mo[3][6] = { {'*','y','u','i','o','p'}, {'*','h','j','k','l','*'}, {'b','n','m','*','*','*'}};
+bool zamo = false; //0이면 자음 1이면 모음
+
+int find_coor(char alpha) {
+	for (int y = 0; y < 3; y++) {
+		for (int x = 0; x < 6; x++) {
+			if (za[y][x] == alpha) {
+				zamo = 0;
+				return y * 10 + x;
+
+			}
+			else if(mo[y][x] == alpha) {
+				zamo = 1;
+				return y * 10 + x;
+			}
+		}
+	}
+}
+
+void click(char alpha) {
+	int coor = find_coor(alpha);
+	//0이면 자음 1이면 모음
+	if (zamo == 0) {
+		ret += abs((coor / 10) - (ll / 10)) + abs((coor % 10) - (ll % 10));
+		ll = coor;
+	}
+	else if (zamo == 1) {
+		ret += abs((coor / 10) - (lr / 10)) + abs((coor % 10) - (lr % 10));
+		lr = coor;
+	}
+	ret++; //클릭하는데 1초
+}
+
+int main(void) {
 
 	ios::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
 	
-	char left[3][5] = { {'q','w','e','r','t'} , {'a','s','d','f','g'}, {'z','x','c','v','.'} };
-	char right[3][6] = { {'.','y','u','i','o','p'}, {'.','h','j','k','l','.'}, {'b','n','m','.','.','.'}};
+	cin >> sl >> sr;
+	ll = find_coor(sl);
+	lr = find_coor(sr);
 
-	char a, b;
 	string str;
-	int apx,apy,bpx,bpy;
-	int ans = 0;
-	cin >> a >> b;
 	cin >> str;
-
-	bool acheck = 0, bcheck = 0;
-	for (int i = 0; i < 3; i++) {
-		if (acheck == 1 && bcheck == 1)
-			break;
-		for (int j = 0; j < 6; j++) {
-			if (j<5 && a == left[i][j]) {
-				apx = j;
-				apy = i;
-				acheck = 1;
-			}
-			if (b == right[i][j]) {
-				bpx = j;
-				bpy = i;
-				bcheck = 1;
-			}
-		}
-	}
-
 	for (int i = 0; i < str.length(); i++) {
-		bool strcheck = 0;
-		for (int j = 0; j < 3; j++) {
-			if (strcheck == 1)
-				break;
-			for (int k = 0; k < 6; k++) {
-				if (k<5 && str[i] == left[j][k]) {
-					ans += abs(apx - k) + abs(apy - j);
-					apx = k;
-					apy = j;
-					strcheck = 1;
-					break;
-				}
-				else if (str[i] == right[j][k]) {
-					ans += abs(bpx - k) + abs(bpy - j);
-					bpx = k;
-					bpy = j;
-					strcheck = 1;
-					break;
-				}
-			}
-		}
+		arr[i] = str[i];
+		click(str[i]);
 	}
 
-
-	ans += str.length();
-	cout << ans;
-
+	cout << ret;
 
 	return 0;
 }

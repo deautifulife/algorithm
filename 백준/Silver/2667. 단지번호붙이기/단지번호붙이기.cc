@@ -6,36 +6,40 @@
 using namespace std;
 
 int n;
-int map[30][30];
-bool visited[30][30];
-vector<int> answer;
+bool visited[26][26];
+int map[26][26];
+vector<int> ret;
 
-//오 아 왼 위
-int dx[4] = {0, 1, 0, -1};
-int dy[4] = {1, 0, -1, 0};
+int dy[4] = { 0,1,0,-1 };
+int dx[4] = { 1,0,-1,0 };
 
-void bfs(int row, int col){
+void BFS(int row, int col) {
     queue<pair<int,int>> q;
     q.push(make_pair(row,col));
     visited[row][col] = true;
-    int cnt = 1;
-    while(!q.empty()){
-        int front_x = q.front().first;
-        int front_y = q.front().second;
+    int cnt = 0;
+    cnt++;
+
+    while (!q.empty()) {
+        int cy = q.front().first;
+        int cx = q.front().second;
         q.pop();
-        for(int i=0; i<4; i++){
-            int next_x = front_x + dx[i];
-            int next_y = front_y + dy[i];
-            if(next_x < 0 || next_x >= n || next_y < 0 || next_y >= n)
+
+        for (int i = 0; i < 4; i++) {
+            int ny = cy + dy[i];
+            int nx = cx + dx[i];
+
+            if (ny < 0 || ny >= n || nx < 0 || nx >= n) {
                 continue;
-            if(visited[next_x][next_y] == false && map[next_x][next_y] == 1){
-                q.push(make_pair(next_x, next_y));
-                visited[next_x][next_y] = true;
+            }
+            if (map[ny][nx] == 1 && visited[ny][nx] == false) {
+                q.push(make_pair(ny, nx));
+                visited[ny][nx] = true;
                 cnt++;
             }
         }
     }
-    answer.push_back(cnt);
+    ret.push_back(cnt);
 }
 
 int main() {
@@ -43,24 +47,30 @@ int main() {
     cin.tie(NULL);
     cout.tie(NULL);
 
-    cin>>n;
-    for(int i=0; i<n; i++){
-        string num;
-        cin>>num;
-        for(int j=0; j<n; j++){
-            map[i][j] = num[j]-'0';
+    cin >> n;
+    for (int y = 0; y < n; y++) {
+        string str;
+        cin >> str;
+        for (int x = 0; x < n; x++) {
+            map[y][x] = str[x] - '0';
         }
     }
 
-    for(int i=0; i<n; i++){
-        for(int j=0; j<n; j++){
-            if(visited[i][j] == false && map[i][j] == 1)
-                bfs(i,j);
+    for (int y = 0; y < n; y++) {
+        for (int x = 0; x < n; x++) {
+            if (visited[y][x] == false && map[y][x] == 1) {
+                BFS(y, x);
+            }
         }
     }
 
-    sort(answer.begin(), answer.end());
-    cout<<answer.size()<<'\n';
-    for(int i=0; i<answer.size(); i++)
-        cout<<answer[i]<<'\n';
+    sort(ret.begin(), ret.end());
+    cout << ret.size() << '\n';
+    for (int i = 0; i < ret.size(); i++) {
+        cout << ret[i] << '\n';
+    }
+
+
 }
+
+

@@ -1,31 +1,50 @@
 #include <iostream>
-#include <vector>
-#include <algorithm>
+#include <cmath>
 
 using namespace std;
 
-int main(){
+int main() {
 
 	ios::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
-	
+
 	int n;
 	cin >> n;
-	
-	vector<int>dp(n + 1, 0);
-	dp[1] = 1;
 
-	for (int i = 2; i <= n; i++) {
-		int minn = 999999;
-		for (int j = 1; j * j <= i; j++) {
-			int tmp = i - j * j;
-			minn = min(minn, dp[tmp]);
+	int ret = 4;
+	int sqrtN = sqrt(n);
+
+	for (int a = 1; a <= sqrtN; a++) {
+		if (a * a == n) {
+			ret = 1;
+			break;
 		}
-		dp[i] = minn + 1;
-	}
-	cout << dp[n];
 
+		for (int b = 1; b <= sqrtN; b++) {
+			if (a * a + b * b > n) {
+				break;
+			}
+			if (a * a + b * b == n) {
+				ret = 2;
+			}
+			if (ret <= 2)
+				break;
+
+			for (int c = 1; c <= sqrtN; c++) {
+				if (a * a + b * b + c * c > n) {
+					break;
+				}
+
+				if (a * a + b * b + c * c == n) {
+					ret = 3;
+					break;
+				}
+			}
+		}
+	}
+
+	cout << ret;
 
 	return 0;
 }

@@ -2,65 +2,65 @@
 
 using namespace std;
 
-int M;
+int jm, sm; //준현이 성민잉 가진 현금
+int js, ss; //둘의 주식 보유수
 int stock[14];
-int Jmoney, Smoney, Jstock, Sstock;
 int upcnt, downcnt;
-int Jret, Sret;
 
-void BMP(int day) {
-	if (Jmoney >= stock[day]) {
-		Jstock += Jmoney / stock[day];
-		Jmoney = Jmoney % stock[day];
+void BNP(int price){
+	if(jm > price){
+		js += jm/price;
+		jm = jm%price;
 	}
 }
 
-void TIMING(int day) {
-	if (day > 0 && stock[day] > stock[day - 1]) {
-		upcnt++;
-		downcnt = 0;
-	}
-	else if (day > 0 && stock[day] < stock[day - 1]) {
-		downcnt++;
-		upcnt = 0;
-	}
-
-	//전량매도
-	if (upcnt >= 3) {
-		Smoney += Sstock * stock[day];
-		Sstock = 0;
-	}
-	//전량매수
-	if (downcnt >= 3) {
-		if (Smoney >= stock[day]) {
-			Sstock += Smoney / stock[day];
-			Smoney = Smoney % stock[day];
+void TIMING(int price){
+	if(sm > price){
+		if(upcnt >= 3){
+		sm += ss*price; //전량 매도
+		ss = 0;
+		}
+		if(downcnt >= 3){
+			ss += sm/price; //전량 매수
+			sm = sm%price;
 		}
 	}
 }
-int main(void) {
 
+int main() {
 	ios::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
+
+	int money;
+	cin>>money;
+
+	jm = money;
+	sm = money;
 	
-	cin >> M;
-	Jmoney =M, Smoney=M;
-	for (int i = 0; i < 14; i++) {
-		cin >> stock[i];
-		BMP(i);
-		TIMING(i);
+	for(int i=0; i<14; i++){
+		cin>>stock[i];
+		BNP(stock[i]);
+		if(i>0 && stock[i] > stock[i-1]){
+			upcnt++;
+			downcnt = 0;
+		}
+		if(i>0 && stock[i] < stock[i-1]){
+			downcnt++;
+			upcnt = 0;
+		}
+		TIMING(stock[i]);
 	}
 
-	Jret = Jmoney + stock[13] * Jstock;
-	Sret = Smoney + stock[13] * Sstock;
+	jm += stock[13] * js;
+	sm += stock[13] * ss;
 
-	if (Jret > Sret)
-		cout << "BNP";
-	else if (Jret < Sret)
-		cout << "TIMING";
-	else if (Jret == Sret)
-		cout << "SAMESAME";
+	if(jm > sm)
+		cout<<"BNP";
+	else if(jm < sm)
+		cout<<"TIMING";
+	else if(jm == sm)
+		cout<<"SAMESAME";
 
 	return 0;
 }

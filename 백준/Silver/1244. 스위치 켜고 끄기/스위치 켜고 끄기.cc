@@ -2,66 +2,65 @@
 
 using namespace std;
 
-int N,S;
-int swit[101];
+bool swit[100];
+int n,s;
 
-void trans(int num) {
-	if (swit[num] == 0)
-		swit[num] = 1;
-	else if (swit[num] == 1)
-		swit[num] = 0;
+void trans(int numb){
+	if(swit[numb]==1)
+		swit[numb]=0;
+	else
+		swit[numb]=1;
 }
 
-void command(int sex, int num) {
-	if (sex == 1) {
-		for (int i = num; i <= N; i += num) {
-			trans(i);
+void turn(int sex, int num){
+	if(sex == 1){
+		int mul = 1;
+		while(num * mul <= n){
+			trans(num*mul);
+			mul++;
 		}
 	}
-	else if (sex == 2) {
+	else{
 		trans(num);
-		int front = num - 1;
-		int back = num + 1;
-		while (1) {
-			if (front <1 || back >N)
-				break;
-			if (swit[front] == swit[back]) {
-				trans(front);
-				trans(back);
-				front--;
-				back++;
-				
+		int cnt=1;
+		while(1){
+			if(num-cnt > 0 && num+cnt <= n && swit[num-cnt] == swit[num+cnt]){
+				trans(num-cnt);
+				trans(num+cnt);
 			}
 			else
 				break;
+
+			cnt++;
 		}
 	}
 }
 
-int main(void) {
-
+int main() {
 	ios::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
-	
-	cin >> N;
-	for (int i = 1; i <= N; i++) {
-		cin >> swit[i];
+
+	cin>>n;
+	for(int i=1; i<=n; i++){
+		bool cur;
+		cin>>cur;
+		swit[i] = cur;
 	}
-	cin >> S;
-	for (int i = 0; i < S; i++) {
+
+	cin>>s;
+	for(int i=1; i<=s; i++){
 		int sex, num;
-		cin >> sex >> num;
-		command(sex, num);
+		cin>>sex>>num;
+		turn(sex,num);
 	}
 
-	for (int i = 1; i <= N; i++) {
-		cout << swit[i] << ' ';
+
+	for(int i=1; i<=n; i++){
+		cout<<swit[i]<<' ';
 		if (i % 20 == 0) {
-			cout << '\n';
+			cout<<'\n';
 		}
-
 	}
-
 	return 0;
 }

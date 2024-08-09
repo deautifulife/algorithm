@@ -1,39 +1,26 @@
 #include <iostream>
-#include <vector>
-#include <algorithm>
 
 using namespace std;
 
-int n, k;
-vector<int> coin;
-int ea;
+int n,k;
+int coin[10];
+int cnt;
 
-bool compare(int a, int b) {
-	return a > b;
-}
-int main(){
+int main() {
 
-	ios::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-
-	cin >> n >> k;
-	for (int i = 0; i < n; i++) {
-		int input;
-		cin >> input;
-		coin.push_back(input);
+	cin>>n>>k;
+	for(int i=0; i<n; i++){
+		cin>>coin[i];
 	}
 
-	sort(coin.begin(), coin.end(), compare);
-
-	for (int i = 0; i < n; i++) {
-		while (coin[i] <= k) {
+	for(int i=n-1; i>=0; i--){
+		while(coin[i] <= k){
 			k -= coin[i];
-			ea++;
+			cnt++;
 		}
 	}
-
-	cout << ea;
+	cout<<cnt;
 
 	return 0;
+	
 }

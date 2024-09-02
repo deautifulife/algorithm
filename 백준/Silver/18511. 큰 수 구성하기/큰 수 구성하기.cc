@@ -9,7 +9,7 @@ int n, k;
 int ret = 0;
 vector<int> v;
 
-void dfs(int num, int ten) { //num : 주어진 k개의 종류 원소로 만들 수 있는 숫자, tem : 자릿수
+void dfs(int num, int ten) { //num : 주어진 k개의 종류 원소로 만들 수 있는 숫자, ten : 자릿수
     if (n < num) {
         return;
     }
@@ -37,8 +37,8 @@ int main() {
     dfs(0, 1);
 
     cout << ret;
-    
+
 
     return 0;
-    
+
 }

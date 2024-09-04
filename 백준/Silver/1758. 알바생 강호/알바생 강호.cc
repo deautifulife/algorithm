@@ -4,38 +4,38 @@
 
 using namespace std;
 
-//int grade[100002];
-vector<int> grade;
+int n;
+vector<int> line;
+long long ret;
 
 bool compare(int a, int b) {
-	return a > b;
+    return a > b;
 }
 
-int main(){
+int main() {
 
-	ios::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
 
-	int n;
-	long long sum = 0; //등수가 100000까지 이므로 범위가 늘어야함
-	cin >> n;
-	for (int i = 1; i <= n; i++) {
-		int input;
-		cin >> input;
-		grade.push_back(input);
-	}
+    cin >> n;
+    for (int i = 0; i < n; i++) {
+        int p;
+        cin >> p;
+        line.push_back(p);
+    }
 
-	sort(grade.begin(), grade.end(), compare);
+    sort(line.begin(), line.end(), compare);
 
-	for (int i = 0; i < grade.size(); i++) {
-		long long tip = grade[i] - (i);
-		if (tip < 0)
-			tip = 0;
-		sum += tip;
-	}
-	cout << sum;
+    for (int i = 0; i < n; i++) {
+        int tip = line[i] - i;
+        if (tip < 0)
+            continue;
+        ret += tip;
+    }
+
+    cout << ret;
 
 
-	return 0;
+    return 0;
 }

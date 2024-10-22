@@ -1,40 +1,26 @@
 #include <iostream>
-#include <cmath>
+#include <math.h>
 
 using namespace std;
 
 
-int main() {
+int main(){
 
 	ios::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	long long n;
-	cin >> n;
+    long long n,q;
+    cin>>n;
 
+    q = sqrt(n);
 
-	long long s = 0;
-	long long e = sqrt(n);
-	long long mid = (s + e) / 2;
+    if((q*q) < n){
+        q++;
+    }
 
-	while (s <= e) {
-		mid = (s + e) / 2;
-
-		if (mid * mid > n) {
-			e = mid - 1;
-		}
-		else if (mid * mid < n) {
-			s = mid + 1;
-		}
-		else
-			break;
-	}
-
-	if (n > mid * mid)
-		mid++;
-
-	cout << mid;
+    cout<<q;
+   
 
 	return 0;
 }

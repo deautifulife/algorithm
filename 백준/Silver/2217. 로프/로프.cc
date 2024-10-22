@@ -1,13 +1,9 @@
 #include <iostream>
-//#include <vector>
-//#include <cmath>
 #include <algorithm>
-#include <functional>
-
 
 using namespace std;
 
-int rope[100001];
+int rope[100000];
 
 int main(){
 
@@ -15,22 +11,24 @@ int main(){
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	int n;
-	cin >> n;
-	for (int i = 0; i < n; i++) {
-		cin >> rope[i];
-	}
+    int n;
+    cin>>n;
+    for(int i=0; i<n; i++){
+        cin>>rope[i];
+    }
 
-	sort(rope, rope + n, greater<int>());
-	
-	long long ans = 0;
-	for (int i = 0; i < n; i++) {
-		long long sum =  rope[i] * (i+1); //i는 0부터니까
-		if (sum > ans)
-			ans = sum;
-	}
+    //내림차순 정렬
+    sort(rope, rope+n, greater<int>());
 
-	cout << ans;
+    int ans = 0;
+    for(int i=0; i<n; i++){
+        int sum = rope[i] * (i+1);
+        if(sum > ans)
+            ans = sum;
+    }
+
+    cout<<ans;
+   
 
 	return 0;
 }
